@@ -11,7 +11,6 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.LogoPosition;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -142,7 +141,7 @@ public class MainActivity extends BaseActiciy
         mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
         mBaiduMap = mMapView.getMap();
         //地图logo位置
-        mMapView.setLogoPosition(LogoPosition.logoPostionleftTop);
+//        mMapView.setLogoPosition(LogoPosition.logoPostionleftTop);
         //普通地图
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
 
@@ -168,24 +167,30 @@ public class MainActivity extends BaseActiciy
         mLocClient.setLocOption(option);
         //mLocClient.start();
     }
-
+    private BitmapDescriptor bdSt;
+    private BitmapDescriptor bdEn;
     private void add()
     {
-        if ((mCurrentLat == mCurrentLat) || mCurrentLat == 0 || mCurrentLat == 0)
+        if ((mCurrentLat == mCurrentLon) || mCurrentLat == 0 || mCurrentLon == 0)
         {
             return;
+        }
+        if (!StringUtils.isEmpty(mBaiduMap))
+        {
+            mBaiduMap.clear();
         }
         //定义Maker坐标点
         LatLng point = new LatLng(mCurrentLat, mCurrentLon);
         //构建Marker图标
-        BitmapDescriptor bitmap = BitmapDescriptorFactory
+        bdSt = BitmapDescriptorFactory
                 .fromResource(R.mipmap.ic_launcher);
         //构建MarkerOption，用于在地图上添加Marker
         OverlayOptions option = new MarkerOptions()
                 .position(point)
-                .icon(bitmap);
+                .icon(bdSt);
         //在地图上添加Marker，并显示
         mBaiduMap.addOverlay(option);
+
 
         MapStatus.Builder builder = new MapStatus.Builder();
         builder.target(point);
@@ -366,6 +371,7 @@ public class MainActivity extends BaseActiciy
             case R.id.location_blood_plu:// 脉率
                 break;
             case R.id.img_position_of:// 回到手表所在的位置
+                YHViewInject.create().showTips("xxxxxxxxxxx");
                 add();
                 break;
             case R.id.img_According:// 显示或不显示自己的位置
@@ -425,6 +431,11 @@ public class MainActivity extends BaseActiciy
     protected void onDestroy()
     {
         super.onDestroy();
+        if (bdSt != null && bdEn != null)
+        {
+            bdSt.recycle();// 释放图片
+            bdEn.recycle();
+        }
         //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
         // 退出时销毁定位
         mLocClient.stop();
