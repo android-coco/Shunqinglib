@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="yh.org.shunqinglib">
+
     <!-- 网络 -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <!-- 写 -->
@@ -28,6 +29,7 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="a9G8YTwtEP6DlGtXMQefGFktB0m0eTMC"/>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -35,6 +37,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <!--  -->
+        <activity android:name=".ZdBhActivity"/>
+
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
@@ -44,6 +49,9 @@
                 </action>
             </intent-filter>
         </service>
+
+        <activity android:name=".DwSdActivity">
+        </activity>
     </application>
 
 </manifest>

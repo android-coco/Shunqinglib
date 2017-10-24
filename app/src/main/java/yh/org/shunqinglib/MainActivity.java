@@ -155,7 +155,7 @@ public class MainActivity extends BaseActiciy
     {
         //"{\"sns\":\"123456789012345\"}"
         YHRequestFactory.getRequestManger().postString(ShunQingApp.HOME_HOST, GlobalUtils
-                .DEVER_INFO, null, "{\"sns\":\"123456789012345\"}", new HttpCallBack()
+                .DEVER_INFO, null, "{\"sns\":\""+ShunQingApp.DEIVER_SN+"\"}", new HttpCallBack()
         {
             @Override
             public void onSuccess(String t)
@@ -461,6 +461,7 @@ public class MainActivity extends BaseActiciy
             case R.id.location_cry: // 免扰时段
                 break;
             case R.id.location_log: // 定位时段
+                showActivity(aty,DwSdActivity.class);
                 break;
             case R.id.gps_command: // 定位记录
                 break;
@@ -468,6 +469,7 @@ public class MainActivity extends BaseActiciy
                 ljDW();
                 break;
             case R.id.location_sos:// 指定拨号
+                showActivity(aty,ZdBhActivity.class);
                 break;
             case R.id.sleep_time://允许呼入
                 break;
@@ -481,7 +483,7 @@ public class MainActivity extends BaseActiciy
     private void ljDW()
     {
         YHRequestFactory.getRequestManger().postString(ShunQingApp.HOME_HOST, GlobalUtils
-                .TERMINAL_LOCATE, null, "{\"sn\":\"123456789012345\"}", new HttpCallBack()
+                .TERMINAL_LOCATE, null, "{\"sn\":\""+ShunQingApp.DEIVER_SN+"\"}", new HttpCallBack()
         {
             @Override
             public void onSuccess(String t)

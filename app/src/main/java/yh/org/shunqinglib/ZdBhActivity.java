@@ -18,7 +18,7 @@ import yh.org.shunqinglib.utils.GlobalUtils;
 
 /**
  * Created by yhlyl on 2017/10/24.
- * 自定拨号
+ * 指定拨号
  */
 
 public class ZdBhActivity extends BaseActiciy
@@ -32,6 +32,22 @@ public class ZdBhActivity extends BaseActiciy
     public void setRootView()
     {
         setContentView(R.layout.zdbh);
+    }
+
+
+    @Override
+    public void initWidget()
+    {
+        super.initWidget();
+        toolbar.setLeftTitleText("返回");
+        toolbar.setMainTitle("指定拨号");
+    }
+
+    @Override
+    protected void onBackClick()
+    {
+        super.onBackClick();
+        finish();
     }
 
     @Override
@@ -56,7 +72,8 @@ public class ZdBhActivity extends BaseActiciy
     private void zjBH()
     {
         YHRequestFactory.getRequestManger().postString(ShunQingApp.HOME_HOST, GlobalUtils
-                .TERMINAL_CALL, null, "{\"sns\":\"123456789012345\",\"number\":\"" + number
+                .TERMINAL_CALL, null, "{\"sn\":\"" + ShunQingApp.DEIVER_SN + "\",\"number\":\""
+                + number
                 .getText().toString() + "\"}", new
                 HttpCallBack()
                 {
@@ -66,7 +83,7 @@ public class ZdBhActivity extends BaseActiciy
                         super.onSuccess(t);
                         final JsonLjDWModel jsonEquipmentModel = JsonUitl.stringToTObject
                                 (ShunQingApp
-                                .getInstance().yhGson, t, JsonLjDWModel.class);
+                                        .getInstance().yhGson, t, JsonLjDWModel.class);
                         if ("0".equals(jsonEquipmentModel.getResultCode()))
                         {
                             YHViewInject.create().showTips("拨号指令发送成功！");
@@ -74,7 +91,8 @@ public class ZdBhActivity extends BaseActiciy
                         else if ("5".equals(jsonEquipmentModel.getResultCode()))
                         {
                             YHViewInject.create().showTips("设备不在线");
-                        }else if ("6".equals(jsonEquipmentModel.getResultCode()))
+                        }
+                        else if ("6".equals(jsonEquipmentModel.getResultCode()))
                         {
                             YHViewInject.create().showTips("设备无反应");
                         }
