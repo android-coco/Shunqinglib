@@ -1,8 +1,8 @@
 package yh.org.shunqinglib;
 
 import android.Manifest;
-import android.widget.Button;
-import android.widget.RadioGroup;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -40,21 +40,17 @@ public class MainActivity extends BaseActiciy
 {
     @BindView(id = R.id.bmapView)
     private MapView mMapView = null;
+    @BindView(id = R.id.img_position_of, click = true)
+    ImageView img_position_of;// 回到手表的位子
+    @BindView(id = R.id.img_According, click = true)
+    ImageView img_According;// 显示或不显示自己的位子
     private BaiduMap mBaiduMap;
-    // UI相关
-    RadioGroup.OnCheckedChangeListener radioButtonListener;
-    Button requestLocButton;
     boolean isFirstLoc = true; // 是否首次定位
     private MyLocationData locData;
-    private float direction;
     // 定位相关
     LocationClient mLocClient;
     public MyLocationListenner myListener = new MyLocationListenner();
     private MyLocationConfiguration.LocationMode mCurrentMode;
-    BitmapDescriptor mCurrentMarker;
-    private static final int accuracyCircleFillColor = 0xAAFFFF88;
-    private static final int accuracyCircleStrokeColor = 0xAA00FF00;
-    private Double lastX = 0.0;
     private int mCurrentDirection = 0;
     private double mCurrentLat = 0.0;
     private double mCurrentLon = 0.0;
@@ -114,7 +110,9 @@ public class MainActivity extends BaseActiciy
                 JsonEquipmentModel jsonEquipmentModel = JsonUitl.stringToTObject(ShunQingApp.getInstance().yhGson, t, JsonEquipmentModel.class);
                 if (!StringUtils.isEmpty(jsonEquipmentModel) && !StringUtils.isEmpty(jsonEquipmentModel.getDatas()))
                 {
-                    add(jsonEquipmentModel.getDatas().get(0).getClat(), jsonEquipmentModel.getDatas().get(0).getClon());
+                    mCurrentLat = jsonEquipmentModel.getDatas().get(0).getClat();
+                    mCurrentLon = jsonEquipmentModel.getDatas().get(0).getClon();
+                    add();
                 }
             }
 
@@ -171,10 +169,14 @@ public class MainActivity extends BaseActiciy
         //mLocClient.start();
     }
 
-    private void add(double lat, double lon)
+    private void add()
     {
+        if ((mCurrentLat == mCurrentLat) || mCurrentLat == 0 || mCurrentLat == 0)
+        {
+            return;
+        }
         //定义Maker坐标点
-        LatLng point = new LatLng(lat, lon);
+        LatLng point = new LatLng(mCurrentLat, mCurrentLon);
         //构建Marker图标
         BitmapDescriptor bitmap = BitmapDescriptorFactory
                 .fromResource(R.mipmap.ic_launcher);
@@ -354,6 +356,48 @@ public class MainActivity extends BaseActiciy
         }
     }
 
+
+    @Override
+    public void widgetClick(View v)
+    {
+        super.widgetClick(v);
+        switch (v.getId())
+        {
+            case R.id.location_blood_plu:// 脉率
+                break;
+            case R.id.img_position_of:// 回到手表所在的位置
+                add();
+                break;
+            case R.id.img_According:// 显示或不显示自己的位置
+                break;
+            case R.id.location_report: // 短信播报
+                break;
+            case R.id.location_cry: // 远程拨号
+                break;
+            case R.id.location_log: // 消息
+                break;
+            case R.id.gps_command: // gps_command
+                break;
+            case R.id.location_track: // 历史轨迹
+                break;
+            case R.id.location_rall:// 电子围栏
+                break;
+            case R.id.location_sos:// 紧急号码
+                break;
+            case R.id.rl_gohome:// 新的导航
+                break;
+
+        }
+    }
+
+
+    @Override
+    protected void onMenuClick()
+    {
+        super.onMenuClick();
+        // 终端设置
+        YHViewInject.create().showTips("设置");
+    }
 
     @Override
     protected void onResume()
