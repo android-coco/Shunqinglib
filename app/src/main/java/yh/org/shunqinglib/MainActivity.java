@@ -113,6 +113,7 @@ public class MainActivity extends BaseActiciy
                     {
                         super.run();
                         while (isWork){
+                            getLastLoction();
                             try
                             {
                                 sleep(60 * 1000);
@@ -121,7 +122,7 @@ public class MainActivity extends BaseActiciy
                             {
                                 e.printStackTrace();
                             }
-                            getLastLoction();
+
                         }
                     }
                 }.start();
@@ -421,28 +422,26 @@ public class MainActivity extends BaseActiciy
         super.widgetClick(v);
         switch (v.getId())
         {
-            case R.id.location_blood_plu:// 脉率
+            case R.id.location_blood_plu:// 执行监听
                 break;
             case R.id.img_position_of:// 回到手表所在的位置
                 add();
                 break;
             case R.id.img_According:// 显示或不显示自己的位置
                 break;
-            case R.id.location_report: // 短信播报
+            case R.id.location_report: // 闹钟
                 break;
-            case R.id.location_cry: // 远程拨号
+            case R.id.location_cry: // 免扰时段
                 break;
-            case R.id.location_log: // 消息
+            case R.id.location_log: // 定位时段
                 break;
-            case R.id.gps_command: // gps_command
+            case R.id.gps_command: // 定位记录
                 break;
-            case R.id.location_track: // 历史轨迹
+            case R.id.location_rall:// 立即定位
                 break;
-            case R.id.location_rall:// 电子围栏
+            case R.id.location_sos:// 指定拨号
                 break;
-            case R.id.location_sos:// 紧急号码
-                break;
-            case R.id.rl_gohome:// 新的导航
+            case R.id.sleep_time://允许呼入
                 break;
 
         }
