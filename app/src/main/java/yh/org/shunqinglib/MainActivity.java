@@ -3,6 +3,8 @@ package yh.org.shunqinglib;
 import android.Manifest;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
@@ -34,6 +36,7 @@ import java.util.List;
 import yh.org.shunqinglib.app.ShunQingApp;
 import yh.org.shunqinglib.base.BaseActiciy;
 import yh.org.shunqinglib.bean.JsonEquipmentModel;
+import yh.org.shunqinglib.utils.GlobalUtils;
 
 public class MainActivity extends BaseActiciy
 {
@@ -43,6 +46,28 @@ public class MainActivity extends BaseActiciy
     ImageView img_position_of;// 回到手表的位子
     @BindView(id = R.id.img_According, click = true)
     ImageView img_According;// 显示或不显示自己的位子
+
+    @BindView(id = R.id.location_rall,click = true)
+    RelativeLayout location_rall;
+    @BindView(id = R.id.location_log,click = true)
+    RelativeLayout location_log;
+    @BindView(id = R.id.location_report,click = true)
+    RelativeLayout location_report;
+    @BindView(id = R.id.location_cry,click = true)
+    RelativeLayout location_cry;
+    @BindView(id = R.id.location_blood_plu,click = true)
+    RelativeLayout location_blood_plu;
+    @BindView(id = R.id.location_sos,click = true)
+    RelativeLayout location_sos;
+    @BindView(id = R.id.sleep_time,click = true)
+    RelativeLayout sleep_time;
+    @BindView(id = R.id.gps_command,click = true)
+    RelativeLayout gps_command;
+
+    @BindView(id = R.id.tv_street)
+    TextView textAddress;//地址
+
+
     private BaiduMap mBaiduMap;
     boolean isFirstLoc = true; // 是否首次定位
     private MyLocationData locData;
@@ -55,6 +80,7 @@ public class MainActivity extends BaseActiciy
     private double mCurrentLon = 0.0;
     private float mCurrentAccracy;
 
+    private boolean isWork = true;
     @Override
     public void setRootView()
     {
@@ -80,8 +106,25 @@ public class MainActivity extends BaseActiciy
             public void onSuccess()//所有权限OK
             {
                 //直接执行相应操作了
-                YHViewInject.create().showTips("OK");
                 Constants.Config.IS_WRITE_EXTERNAL_STORAGE = true;
+                new Thread(){
+                    @Override
+                    public void run()
+                    {
+                        super.run();
+                        while (isWork){
+                            try
+                            {
+                                sleep(60 * 1000);
+                            }
+                            catch (InterruptedException e)
+                            {
+                                e.printStackTrace();
+                            }
+                            getLastLoction();
+                        }
+                    }
+                }.start();
             }
 
             @Override
@@ -98,20 +141,32 @@ public class MainActivity extends BaseActiciy
             }
         });
 
+    }
 
+    //获取最后位置
+    private void getLastLoction()
+    {
         //"{\"sns\":\"123456789012345\"}"
-        YHRequestFactory.getRequestManger().postString(ShunQingApp.HOME_HOST, "/interface/terminal_profile", null, "{\"sns\":\"123456789012345\"}", new HttpCallBack()
+        YHRequestFactory.getRequestManger().postString(ShunQingApp.HOME_HOST, GlobalUtils.DEVER_INFO, null, "{\"sns\":\"123456789012345\"}", new HttpCallBack()
         {
             @Override
             public void onSuccess(String t)
             {
                 super.onSuccess(t);
-                JsonEquipmentModel jsonEquipmentModel = JsonUitl.stringToTObject(ShunQingApp.getInstance().yhGson, t, JsonEquipmentModel.class);
+                final JsonEquipmentModel jsonEquipmentModel = JsonUitl.stringToTObject(ShunQingApp.getInstance().yhGson, t, JsonEquipmentModel.class);
                 if (!StringUtils.isEmpty(jsonEquipmentModel) && !StringUtils.isEmpty(jsonEquipmentModel.getDatas()))
                 {
-                    mCurrentLat = jsonEquipmentModel.getDatas().get(0).getClat();
-                    mCurrentLon = jsonEquipmentModel.getDatas().get(0).getClon();
-                    add();
+                    runOnUiThread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            mCurrentLat = jsonEquipmentModel.getDatas().get(0).getClat();
+                            mCurrentLon = jsonEquipmentModel.getDatas().get(0).getClon();
+                            textAddress.setText(jsonEquipmentModel.getDatas().get(0).getAddress());
+                            add();
+                        }
+                    });
                 }
             }
 
@@ -127,9 +182,7 @@ public class MainActivity extends BaseActiciy
                 super.onFinish();
             }
         }, TAG);
-
     }
-
 
     @Override
     public void initWidget()
@@ -371,7 +424,6 @@ public class MainActivity extends BaseActiciy
             case R.id.location_blood_plu:// 脉率
                 break;
             case R.id.img_position_of:// 回到手表所在的位置
-                YHViewInject.create().showTips("xxxxxxxxxxx");
                 add();
                 break;
             case R.id.img_According:// 显示或不显示自己的位置

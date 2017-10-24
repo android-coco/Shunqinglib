@@ -12,7 +12,7 @@
     <LinearLayout
         android:id="@+id/buttom_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/space_70"
+        android:layout_height="@dimen/space_140"
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
 
@@ -48,7 +48,7 @@
                     android:layout_below="@+id/lt1"
                     android:layout_marginTop="4dp"
                     android:gravity="center"
-                    android:text="围栏"
+                    android:text="立即定位"
                     android:textColor="@color/index_black"
                     android:textSize="@dimen/text_size_16"/>
 
@@ -59,6 +59,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="@dimen/space_6"
                     android:layout_marginTop="@dimen/space_9"
+                    android:visibility="gone"
                     android:background="@drawable/choice_remidesr_assess"/>
 
             </RelativeLayout>
@@ -90,7 +91,7 @@
                     android:layout_below="@+id/lt2"
                     android:layout_marginTop="4dp"
                     android:gravity="center"
-                    android:text="消息"
+                    android:text="定位时段"
                     android:textColor="@color/index_black"
                     android:textSize="@dimen/text_size_16"/>
             </RelativeLayout>
@@ -122,7 +123,7 @@
                     android:layout_below="@+id/lt3"
                     android:layout_marginTop="4dp"
                     android:gravity="center"
-                    android:text="呼叫"
+                    android:text="闹钟"
                     android:textColor="@color/index_black"
                     android:textSize="@dimen/text_size_16"/>
             </RelativeLayout>
@@ -154,7 +155,7 @@
                     android:layout_below="@+id/lt4"
                     android:layout_marginTop="4dp"
                     android:gravity="center"
-                    android:text="回拨"
+                    android:text="免扰时段"
                     android:textColor="@color/index_black"
                     android:textSize="@dimen/text_size_16"/>
             </RelativeLayout>
@@ -186,7 +187,7 @@
                     android:layout_below="@+id/lt5"
                     android:layout_marginTop="4dp"
                     android:gravity="center"
-                    android:text="脉率"
+                    android:text="执行监听"
                     android:textColor="@color/index_black"
                     android:textSize="@dimen/text_size_16"/>
             </RelativeLayout>
@@ -196,13 +197,13 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="@color/main_bg"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/space_58"
+            android:layout_height="@dimen/space_70"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:id="@+id/location_sos"
@@ -222,7 +223,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="联系人"
+                    android:text="指定拨号"
                     android:textColor="@color/index_black"
                     android:textSize="@dimen/text_size_12"/>
             </LinearLayout>
@@ -250,7 +251,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="睡眠"
+                    android:text="允许呼入"
                     android:textColor="@color/index_black"
                     android:textSize="@dimen/text_size_12"/>
             </LinearLayout>
@@ -272,16 +273,17 @@
                 <TextView
                     android:layout_width="@dimen/space_22"
                     android:layout_height="@dimen/space_22"
-                    android:visibility="gone"/>
+                    android:background="@mipmap/location_track"
+                    android:visibility="visible"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="消息"
+                    android:text="定位记录"
                     android:textColor="@color/index_black"
                     android:textSize="@dimen/text_size_12"
-                    android:visibility="gone"/>
+                    android:visibility="visible"/>
             </LinearLayout>
 
             <View
@@ -359,8 +361,9 @@
                 <TextView
                     android:id="@+id/tv_street"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="正在定位"
+                    android:gravity="center"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/text_size_18"
                     android:textStyle="bold"/>
@@ -371,6 +374,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="正在定位"
+                    android:visibility="gone"
                     android:textColor="@color/main_tab_bottom_notsel"
                     android:textSize="@dimen/text_size_16"/>
 
@@ -378,6 +382,7 @@
                     android:id="@+id/tv_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:text="正在定位"
                     android:textColor="@color/main_tab_bottom_notsel"
                     android:textSize="@dimen/text_size_16"/>
@@ -458,6 +463,7 @@
                 android:layout_height="44dp"
                 android:layout_gravity="end"
                 android:layout_marginTop="@dimen/space_10"
+                android:visibility="gone"
                 android:background="@mipmap/img_according_false"
                 android:contentDescription="@null"/>
             <!-- </RelativeLayout> -->
