@@ -1,8 +1,7 @@
-package yh.org.shunqinglib;
+package yh.org.shunqinglib.app;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -24,19 +23,15 @@ import org.yh.library.utils.Constants;
 import org.yh.library.utils.CrashHandler;
 import org.yh.library.utils.DensityUtils;
 import org.yh.library.utils.LogUtils;
-import org.yh.library.utils.NetWorkUtils;
 import org.yh.library.utils.StringUtils;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import yh.org.shunqinglib.R;
 
 /**
  * @author hao
@@ -160,28 +155,28 @@ public class ShunQingApp extends Application
                 .addInterceptor(new LoggerInterceptor("", true))//日志拦截 是否显示返回数据
 //                .addInterceptor(new RetryInterceptor(3))//重试3次
                 .addInterceptor(new HeaderInterceptor())// 统一请求头
-                .addNetworkInterceptor(new Interceptor()//添加网络拦截器缓存用
-                {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException
-                    {
-                        Request request = chain.request();
-                        Response response = chain.proceed(request);
-                        if (NetWorkUtils.isConnectedByState(getInstance()))
-                        {
-                            int maxAge = 60 * 60;// 有网 就1个小时可用 缓存有效时间
-                            return response.newBuilder()
-                                    .header("Cache-Control", "public, max-age=" + maxAge)
-                                    .build();
-                        } else
-                        {
-                            int maxStale = 60 * 60 * 24 * 7;// 没网 就1周可用 缓存有效时间
-                            return response.newBuilder()
-                                    .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
-                                    .build();
-                        }
-                    }
-                })
+//                .addNetworkInterceptor(new Interceptor()//添加网络拦截器缓存用
+//                {
+//                    @Override
+//                    public Response intercept(Chain chain) throws IOException
+//                    {
+//                        Request request = chain.request();
+//                        Response response = chain.proceed(request);
+//                        if (NetWorkUtils.isConnectedByState(getInstance()))
+//                        {
+//                            int maxAge = 60 * 60;// 有网 就1个小时可用 缓存有效时间
+//                            return response.newBuilder()
+//                                    .header("Cache-Control", "public, max-age=" + maxAge)
+//                                    .build();
+//                        } else
+//                        {
+//                            int maxStale = 60 * 60 * 24 * 7;// 没网 就1周可用 缓存有效时间
+//                            return response.newBuilder()
+//                                    .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
+//                                    .build();
+//                        }
+//                    }
+//                })
                 // .cache(cache)//添加缓存
                 .hostnameVerifier(new HostnameVerifier()
                 {
@@ -226,53 +221,6 @@ public class ShunQingApp extends Application
         OkHttpUtils.initClient(okHttpClient);
     }
 
-    /**
-     * 初始化缓存框架ImageLoader
-     *
-     * @param context 上下文
-     */
-    public static void initImageLoader(Context context)
-    {
-
-//        DisplayImageOptions imageOptions = new DisplayImageOptions.Builder()
-//                .showImageOnLoading(R.mipmap.ic_launcher)//加载中图片
-//                .showImageForEmptyUri(R.mipmap.ic_launcher)//加载空URL图片
-//                .showImageOnFail(R.mipmap.ic_launcher)//加载错误图片
-//                .cacheInMemory(true).cacheOnDisk(true)
-//                .imageScaleType(ImageScaleType.EXACTLY)
-//                .resetViewBeforeLoading(true).considerExifParams(false)
-//                .bitmapConfig(Bitmap.Config.RGB_565).build();
-//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-//                .memoryCacheExtraOptions(width, height)
-//                // default = device screen dimensions
-//                .diskCacheExtraOptions(width, height, null)
-//                .threadPoolSize(5)
-//                // default Thread.NORM_PRIORITY - 1
-//                .threadPriority(Thread.NORM_PRIORITY)
-//                // default FIFO
-//                .tasksProcessingOrder(QueueProcessingType.LIFO)
-//                // default
-//                .denyCacheImageMultipleSizesInMemory()
-//                .memoryCache(new LruMemoryCache(2 * 1024 * 1024))
-//                .memoryCacheSize(2 * 1024 * 1024)
-//                .memoryCacheSizePercentage(13)
-//                // default// 文件路径
-////                .diskCache(
-////                        new UnlimitedDiskCache(StorageUtils
-////                                .getOwnCacheDirectory(context,
-////                                        AppConfig.imgCachePath)))
-//                .diskCacheFileNameGenerator(new HashCodeFileNameGenerator())
-//                // default// connectTimeout (20 s), readTimeout (60 s)超时时间
-//                .imageDownloader(new BaseImageDownloader(context, 20 * 1000, 60 * 1000))
-//                // default
-//                .imageDecoder(new BaseImageDecoder(false))
-//                // default
-//                .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
-//                // default
-//                .defaultDisplayImageOptions(imageOptions) // Log日志
-//                .build();
-//        ImageLoader.getInstance().init(config);
-    }
 
     /**
      * 管理所有Activity声明周期

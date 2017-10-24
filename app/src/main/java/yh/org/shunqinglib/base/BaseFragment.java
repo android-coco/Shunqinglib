@@ -13,7 +13,7 @@ import org.yh.library.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import yh.org.shunqinglib.ShunQingApp;
+import yh.org.shunqinglib.app.ShunQingApp;
 
 import static org.yh.library.utils.SystemUtils.isGranted;
 
