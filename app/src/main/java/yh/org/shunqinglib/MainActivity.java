@@ -36,6 +36,7 @@ import java.util.List;
 import yh.org.shunqinglib.app.ShunQingApp;
 import yh.org.shunqinglib.base.BaseActiciy;
 import yh.org.shunqinglib.bean.JsonEquipmentModel;
+import yh.org.shunqinglib.bean.JsonLjDWModel;
 import yh.org.shunqinglib.utils.GlobalUtils;
 
 public class MainActivity extends BaseActiciy
@@ -47,21 +48,21 @@ public class MainActivity extends BaseActiciy
     @BindView(id = R.id.img_According, click = true)
     ImageView img_According;// 显示或不显示自己的位子
 
-    @BindView(id = R.id.location_rall,click = true)
+    @BindView(id = R.id.location_rall, click = true)
     RelativeLayout location_rall;
-    @BindView(id = R.id.location_log,click = true)
+    @BindView(id = R.id.location_log, click = true)
     RelativeLayout location_log;
-    @BindView(id = R.id.location_report,click = true)
+    @BindView(id = R.id.location_report, click = true)
     RelativeLayout location_report;
-    @BindView(id = R.id.location_cry,click = true)
+    @BindView(id = R.id.location_cry, click = true)
     RelativeLayout location_cry;
-    @BindView(id = R.id.location_blood_plu,click = true)
+    @BindView(id = R.id.location_blood_plu, click = true)
     RelativeLayout location_blood_plu;
-    @BindView(id = R.id.location_sos,click = true)
+    @BindView(id = R.id.location_sos, click = true)
     RelativeLayout location_sos;
-    @BindView(id = R.id.sleep_time,click = true)
+    @BindView(id = R.id.sleep_time, click = true)
     RelativeLayout sleep_time;
-    @BindView(id = R.id.gps_command,click = true)
+    @BindView(id = R.id.gps_command, click = true)
     RelativeLayout gps_command;
 
     @BindView(id = R.id.tv_street)
@@ -81,6 +82,7 @@ public class MainActivity extends BaseActiciy
     private float mCurrentAccracy;
 
     private boolean isWork = true;
+
     @Override
     public void setRootView()
     {
@@ -100,19 +102,23 @@ public class MainActivity extends BaseActiciy
         // 读写权限和电话状态权限非必要权限(建议授予)只会申请一次，用户同意或者禁止，只会弹一次
         // 读取电话状态权限
         requestRunTimePermission(new String[]{
-                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE}, new I_PermissionListener()
+                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
+                .WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE}, new
+                I_PermissionListener()
         {
             @Override
             public void onSuccess()//所有权限OK
             {
                 //直接执行相应操作了
                 Constants.Config.IS_WRITE_EXTERNAL_STORAGE = true;
-                new Thread(){
+                new Thread()
+                {
                     @Override
                     public void run()
                     {
                         super.run();
-                        while (isWork){
+                        while (isWork)
+                        {
                             getLastLoction();
                             try
                             {
@@ -148,14 +154,17 @@ public class MainActivity extends BaseActiciy
     private void getLastLoction()
     {
         //"{\"sns\":\"123456789012345\"}"
-        YHRequestFactory.getRequestManger().postString(ShunQingApp.HOME_HOST, GlobalUtils.DEVER_INFO, null, "{\"sns\":\"123456789012345\"}", new HttpCallBack()
+        YHRequestFactory.getRequestManger().postString(ShunQingApp.HOME_HOST, GlobalUtils
+                .DEVER_INFO, null, "{\"sns\":\"123456789012345\"}", new HttpCallBack()
         {
             @Override
             public void onSuccess(String t)
             {
                 super.onSuccess(t);
-                final JsonEquipmentModel jsonEquipmentModel = JsonUitl.stringToTObject(ShunQingApp.getInstance().yhGson, t, JsonEquipmentModel.class);
-                if (!StringUtils.isEmpty(jsonEquipmentModel) && !StringUtils.isEmpty(jsonEquipmentModel.getDatas()))
+                final JsonEquipmentModel jsonEquipmentModel = JsonUitl.stringToTObject
+                        (ShunQingApp.getInstance().yhGson, t, JsonEquipmentModel.class);
+                if (!StringUtils.isEmpty(jsonEquipmentModel) && !StringUtils.isEmpty
+                        (jsonEquipmentModel.getDatas()))
                 {
                     runOnUiThread(new Runnable()
                     {
@@ -221,8 +230,10 @@ public class MainActivity extends BaseActiciy
         mLocClient.setLocOption(option);
         //mLocClient.start();
     }
+
     private BitmapDescriptor bdSt;
     private BitmapDescriptor bdEn;
+
     private void add()
     {
         if ((mCurrentLat == mCurrentLon) || mCurrentLat == 0 || mCurrentLon == 0)
@@ -299,29 +310,34 @@ public class MainActivity extends BaseActiciy
                 location.getAltitude();    //获取海拔高度信息，单位米
                 location.getDirection();    //获取方向信息，单位度
 
-            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation)
+            }
+            else if (location.getLocType() == BDLocation.TypeNetWorkLocation)
             {
 
                 //当前为网络定位结果，可获取以下信息
                 location.getOperators();    //获取运营商信息
 
-            } else if (location.getLocType() == BDLocation.TypeOffLineLocation)
+            }
+            else if (location.getLocType() == BDLocation.TypeOffLineLocation)
             {
 
                 //当前为网络定位结果
 
-            } else if (location.getLocType() == BDLocation.TypeServerError)
+            }
+            else if (location.getLocType() == BDLocation.TypeServerError)
             {
 
                 //当前网络定位失败
                 //可将定位唯一ID、IMEI、定位失败时间反馈至loc-bugs@baidu.com
 
-            } else if (location.getLocType() == BDLocation.TypeNetWorkException)
+            }
+            else if (location.getLocType() == BDLocation.TypeNetWorkException)
             {
 
                 //当前网络不通
 
-            } else if (location.getLocType() == BDLocation.TypeCriteriaException)
+            }
+            else if (location.getLocType() == BDLocation.TypeCriteriaException)
             {
 
                 //当前缺少定位依据，可能是用户没有授权，建议弹出提示框让用户开启权限
@@ -356,7 +372,8 @@ public class MainActivity extends BaseActiciy
          * @param diagnosticType    诊断类型（1~9）
          * @param diagnosticMessage 具体的诊断信息释义
          */
-        public void onLocDiagnosticMessage(int locType, int diagnosticType, String diagnosticMessage)
+        public void onLocDiagnosticMessage(int locType, int diagnosticType, String
+                diagnosticMessage)
         {
 
             if (diagnosticType == LocationClient.LOC_DIAGNOSTIC_TYPE_BETTER_OPEN_GPS)
@@ -364,43 +381,53 @@ public class MainActivity extends BaseActiciy
 
                 //建议打开GPS
 
-            } else if (diagnosticType == LocationClient.LOC_DIAGNOSTIC_TYPE_BETTER_OPEN_WIFI)
+            }
+            else if (diagnosticType == LocationClient.LOC_DIAGNOSTIC_TYPE_BETTER_OPEN_WIFI)
             {
 
                 //建议打开wifi，不必连接，这样有助于提高网络定位精度！
 
-            } else if (diagnosticType == LocationClient.LOC_DIAGNOSTIC_TYPE_NEED_CHECK_LOC_PERMISSION)
+            }
+            else if (diagnosticType == LocationClient.LOC_DIAGNOSTIC_TYPE_NEED_CHECK_LOC_PERMISSION)
             {
 
                 //定位权限受限，建议提示用户授予APP定位权限！
 
-            } else if (diagnosticType == LocationClient.LOC_DIAGNOSTIC_TYPE_NEED_CHECK_NET)
+            }
+            else if (diagnosticType == LocationClient.LOC_DIAGNOSTIC_TYPE_NEED_CHECK_NET)
             {
 
                 //网络异常造成定位失败，建议用户确认网络状态是否异常！
 
-            } else if (diagnosticType == LocationClient.LOC_DIAGNOSTIC_TYPE_NEED_CLOSE_FLYMODE)
+            }
+            else if (diagnosticType == LocationClient.LOC_DIAGNOSTIC_TYPE_NEED_CLOSE_FLYMODE)
             {
 
                 //手机飞行模式造成定位失败，建议用户关闭飞行模式后再重试定位！
 
-            } else if (diagnosticType == LocationClient.LOC_DIAGNOSTIC_TYPE_NEED_INSERT_SIMCARD_OR_OPEN_WIFI)
+            }
+            else if (diagnosticType == LocationClient
+                    .LOC_DIAGNOSTIC_TYPE_NEED_INSERT_SIMCARD_OR_OPEN_WIFI)
             {
 
                 //无法获取任何定位依据，建议用户打开wifi或者插入sim卡重试！
 
-            } else if (diagnosticType == LocationClient.LOC_DIAGNOSTIC_TYPE_NEED_OPEN_PHONE_LOC_SWITCH)
+            }
+            else if (diagnosticType == LocationClient
+                    .LOC_DIAGNOSTIC_TYPE_NEED_OPEN_PHONE_LOC_SWITCH)
             {
 
                 //无法获取有效定位依据，建议用户打开手机设置里的定位开关后重试！
 
-            } else if (diagnosticType == LocationClient.LOC_DIAGNOSTIC_TYPE_SERVER_FAIL)
+            }
+            else if (diagnosticType == LocationClient.LOC_DIAGNOSTIC_TYPE_SERVER_FAIL)
             {
 
                 //百度定位服务端定位失败
                 //建议反馈location.getLocationID()和大体定位时间到loc-bugs@baidu.com
 
-            } else if (diagnosticType == LocationClient.LOC_DIAGNOSTIC_TYPE_FAIL_UNKNOWN)
+            }
+            else if (diagnosticType == LocationClient.LOC_DIAGNOSTIC_TYPE_FAIL_UNKNOWN)
             {
 
                 //无法获取有效定位依据，但无法确定具体原因
@@ -438,6 +465,7 @@ public class MainActivity extends BaseActiciy
             case R.id.gps_command: // 定位记录
                 break;
             case R.id.location_rall:// 立即定位
+                ljDW();
                 break;
             case R.id.location_sos:// 指定拨号
                 break;
@@ -445,6 +473,45 @@ public class MainActivity extends BaseActiciy
                 break;
 
         }
+    }
+
+
+
+    //立即定位
+    private void ljDW()
+    {
+        YHRequestFactory.getRequestManger().postString(ShunQingApp.HOME_HOST, GlobalUtils
+                .TERMINAL_LOCATE, null, "{\"sn\":\"123456789012345\"}", new HttpCallBack()
+        {
+            @Override
+            public void onSuccess(String t)
+            {
+                super.onSuccess(t);
+                final JsonLjDWModel jsonEquipmentModel = JsonUitl.stringToTObject(ShunQingApp
+                        .getInstance().yhGson, t, JsonLjDWModel.class);
+                if ("0".equals(jsonEquipmentModel.getResultCode()))
+                {
+                    YHViewInject.create().showTips("发送立即定位成功");
+                }
+                else if ("5".equals(jsonEquipmentModel.getResultCode()))
+                {
+                    YHViewInject.create().showTips("设备不在线");
+                }
+            }
+
+            @Override
+            public void onFailure(int errorNo, String strMsg)
+            {
+                super.onFailure(errorNo, strMsg);
+                YHViewInject.create().showTips("设备定位超时或接口异常");
+            }
+
+            @Override
+            public void onFinish()
+            {
+                super.onFinish();
+            }
+        }, 6000L, 9000L, 9000L, TAG);
     }
 
 
