@@ -1,5 +1,7 @@
 package yh.org.shunqinglib.utils;
 
+import java.util.Arrays;
+
 /**
  * Created by yhlyl on 2017/10/24.
  */
@@ -61,6 +63,36 @@ public class GlobalUtils
     public static final String TREMINAL_POSITION_DEL = "/interface/terminal_position_delete";
 
     //立即定位
-    public static final String TERMINAL_LOCATE ="/interface/terminal_locate";
+    public static final String TERMINAL_LOCATE = "/interface/terminal_locate";
 
+
+    /**
+     * 去掉前后的逗号
+     * @param str1  字符串
+     * @return  处理后的字符串
+     */
+    public static String replaceStr(String str1)
+    {
+        String regex = "^,*|,*$";
+        return str1.replaceAll(regex, "");
+    }
+
+
+    /**
+     * 得到执行周期1，2，3，4，5，6，7 变为数组
+     *
+     * @param week 星期字符串12345
+     * @return
+     */
+    public static int[] getWeekStringArrays(String week)
+    {
+        int[] weekString = new int[7];
+        byte[] weeks = week.getBytes();
+        Arrays.sort(weeks);
+        for (int i = 0; i < weeks.length; i++)
+        {
+            weekString[i] = weeks[i] - 48;
+        }
+        return weekString;
+    }
 }

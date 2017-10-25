@@ -1,4 +1,4 @@
-package yh.org.shunqinglib;
+package yh.org.shunqinglib.aty;
 
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +11,7 @@ import org.yh.library.ui.YHViewInject;
 import org.yh.library.utils.JsonUitl;
 import org.yh.library.utils.StringUtils;
 
+import yh.org.shunqinglib.R;
 import yh.org.shunqinglib.app.ShunQingApp;
 import yh.org.shunqinglib.base.BaseActiciy;
 import yh.org.shunqinglib.bean.JsonLjDWModel;
@@ -82,8 +83,7 @@ public class ZdBhActivity extends BaseActiciy
                     {
                         super.onSuccess(t);
                         final JsonLjDWModel jsonEquipmentModel = JsonUitl.stringToTObject
-                                (ShunQingApp
-                                        .getInstance().yhGson, t, JsonLjDWModel.class);
+                                (t, JsonLjDWModel.class);
                         if ("0".equals(jsonEquipmentModel.getResultCode()))
                         {
                             YHViewInject.create().showTips("拨号指令发送成功！");

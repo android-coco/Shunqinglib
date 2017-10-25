@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/timing_open"
-        android:layout_width="58dp"
+        android:layout_width="72dp"
         android:layout_height="30dp"
         android:layout_alignParentLeft="true"
         android:layout_centerInParent="true"
@@ -148,25 +148,25 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerInParent="true"
         android:layout_marginRight="10dp"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:layout_alignParentEnd="true">
 
         <TextView
             android:id="@+id/timing_edit"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginBottom="10dp"
             android:background="@mipmap/icon_edit"
-            android:gravity="center_vertical" />
+            android:gravity="center_vertical"/>
 
         <TextView
             android:id="@+id/timing_del"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:background="@mipmap/icon_delete"
             android:gravity="center_vertical"/>
     </LinearLayout>
-
 </RelativeLayout>

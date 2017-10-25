@@ -1,4 +1,4 @@
-package yh.org.shunqinglib;
+package yh.org.shunqinglib.aty;
 
 import android.Manifest;
 import android.view.View;
@@ -33,6 +33,7 @@ import org.yh.library.utils.StringUtils;
 
 import java.util.List;
 
+import yh.org.shunqinglib.R;
 import yh.org.shunqinglib.app.ShunQingApp;
 import yh.org.shunqinglib.base.BaseActiciy;
 import yh.org.shunqinglib.bean.JsonEquipmentModel;
@@ -105,48 +106,48 @@ public class MainActivity extends BaseActiciy
                 Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
                 .WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE}, new
                 I_PermissionListener()
-        {
-            @Override
-            public void onSuccess()//所有权限OK
-            {
-                //直接执行相应操作了
-                Constants.Config.IS_WRITE_EXTERNAL_STORAGE = true;
-                new Thread()
                 {
                     @Override
-                    public void run()
+                    public void onSuccess()//所有权限OK
                     {
-                        super.run();
-                        while (isWork)
+                        //直接执行相应操作了
+                        Constants.Config.IS_WRITE_EXTERNAL_STORAGE = true;
+                        new Thread()
                         {
-                            getLastLoction();
-                            try
+                            @Override
+                            public void run()
                             {
-                                sleep(60 * 1000);
-                            }
-                            catch (InterruptedException e)
-                            {
-                                e.printStackTrace();
-                            }
+                                super.run();
+                                while (isWork)
+                                {
+                                    getLastLoction();
+                                    try
+                                    {
+                                        sleep(60 * 1000);
+                                    }
+                                    catch (InterruptedException e)
+                                    {
+                                        e.printStackTrace();
+                                    }
 
-                        }
+                                }
+                            }
+                        }.start();
                     }
-                }.start();
-            }
 
-            @Override
-            public void onGranted(List<String> grantedPermission)//部分权限OK
-            {
-            }
+                    @Override
+                    public void onGranted(List<String> grantedPermission)//部分权限OK
+                    {
+                    }
 
-            @Override
-            public void onFailure(List<String> deniedPermission)//全部拒绝
-            {
-                Constants.Config.IS_WRITE_EXTERNAL_STORAGE = false;
-                YHViewInject.create().showTips("拒绝授权列表：" + Constants.initPermissionNames
-                        ().get(deniedPermission.get(0)));
-            }
-        });
+                    @Override
+                    public void onFailure(List<String> deniedPermission)//全部拒绝
+                    {
+                        Constants.Config.IS_WRITE_EXTERNAL_STORAGE = false;
+                        YHViewInject.create().showTips("拒绝授权列表：" + Constants.initPermissionNames
+                                ().get(deniedPermission.get(0)));
+                    }
+                });
 
     }
 
@@ -155,14 +156,14 @@ public class MainActivity extends BaseActiciy
     {
         //"{\"sns\":\"123456789012345\"}"
         YHRequestFactory.getRequestManger().postString(ShunQingApp.HOME_HOST, GlobalUtils
-                .DEVER_INFO, null, "{\"sns\":\""+ShunQingApp.DEIVER_SN+"\"}", new HttpCallBack()
+                .DEVER_INFO, null, "{\"sns\":\"" + ShunQingApp.DEIVER_SN + "\"}", new HttpCallBack()
         {
             @Override
             public void onSuccess(String t)
             {
                 super.onSuccess(t);
                 final JsonEquipmentModel jsonEquipmentModel = JsonUitl.stringToTObject
-                        (ShunQingApp.getInstance().yhGson, t, JsonEquipmentModel.class);
+                        (t, JsonEquipmentModel.class);
                 if (!StringUtils.isEmpty(jsonEquipmentModel) && !StringUtils.isEmpty
                         (jsonEquipmentModel.getDatas()))
                 {
@@ -461,7 +462,7 @@ public class MainActivity extends BaseActiciy
             case R.id.location_cry: // 免扰时段
                 break;
             case R.id.location_log: // 定位时段
-                showActivity(aty,DwSdActivity.class);
+                showActivity(aty, DwSdActivity.class);
                 break;
             case R.id.gps_command: // 定位记录
                 break;
@@ -469,7 +470,7 @@ public class MainActivity extends BaseActiciy
                 ljDW();
                 break;
             case R.id.location_sos:// 指定拨号
-                showActivity(aty,ZdBhActivity.class);
+                showActivity(aty, ZdBhActivity.class);
                 break;
             case R.id.sleep_time://允许呼入
                 break;
@@ -478,19 +479,19 @@ public class MainActivity extends BaseActiciy
     }
 
 
-
     //立即定位
     private void ljDW()
     {
         YHRequestFactory.getRequestManger().postString(ShunQingApp.HOME_HOST, GlobalUtils
-                .TERMINAL_LOCATE, null, "{\"sn\":\""+ShunQingApp.DEIVER_SN+"\"}", new HttpCallBack()
+                .TERMINAL_LOCATE, null, "{\"sn\":\"" + ShunQingApp.DEIVER_SN + "\"}", new
+                HttpCallBack()
         {
             @Override
             public void onSuccess(String t)
             {
                 super.onSuccess(t);
-                final JsonLjDWModel jsonEquipmentModel = JsonUitl.stringToTObject(ShunQingApp
-                        .getInstance().yhGson, t, JsonLjDWModel.class);
+                final JsonLjDWModel jsonEquipmentModel = JsonUitl.stringToTObject(t,
+                        JsonLjDWModel.class);
                 if ("0".equals(jsonEquipmentModel.getResultCode()))
                 {
                     YHViewInject.create().showTips("发送立即定位成功");

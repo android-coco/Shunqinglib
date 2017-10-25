@@ -6,6 +6,7 @@ import org.yh.library.bean.YHModel;
 
 /**
  * Created by yhlyl on 2017/5/13.
+ * 立即定位模型
  */
 
 public class JsonLjDWModel extends YHModel

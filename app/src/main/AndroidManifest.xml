@@ -30,7 +30,7 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="a9G8YTwtEP6DlGtXMQefGFktB0m0eTMC"/>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".aty.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -38,7 +38,7 @@
             </intent-filter>
         </activity>
         <!--  -->
-        <activity android:name=".ZdBhActivity"/>
+        <activity android:name=".aty.ZdBhActivity"/>
 
         <service
             android:name="com.baidu.location.f"
@@ -50,7 +50,11 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".DwSdActivity">
+        <activity android:name=".aty.DwSdActivity">
+        </activity>
+        <activity android:name=".aty.DwSdAddActivity">
+        </activity>
+        <activity android:name=".aty.DwSdEditActivity">
         </activity>
     </application>
 
